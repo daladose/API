@@ -1,13 +1,14 @@
 import sqlite3
 from os import path, getcwd
 
-db = path.join(getcwd(), 'database.db')
-
+ROOT = path.dirname(path.realpath(__file__))
+db = path.join(ROOT, "database.db")
+# db = path.join(getcwd(), 'database.db')
 
 class Database:
 
     def __init__(self):
-        self.connection = sqlite3.connect(db)
+        self.connection = sqlite3.connect(db, check_same_thread=False)
 
     def query(self, q, arg=()):
         cursor = self.connection.cursor()

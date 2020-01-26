@@ -20,20 +20,24 @@ class Face:
 
         return None
 
+
     def load_train_file_by_name(self, name):
         trained_storage = path.join(self.storage, 'trained')
         return path.join(trained_storage, name)
+
 
     def load_unknown_file_by_name(self, name):
         unknown_storage = path.join(self.storage, 'unknown')
         return path.join(unknown_storage, name)
 
-    def load_all(self):
 
+    def load_all(self):
+        print("Hey There")
         results = self.db.select('SELECT faces.id, faces.user_id, faces.filename, faces.created FROM faces')
 
         for row in results:
 
+            print(row)
             user_id = row[1]
             filename = row[2]
 
@@ -52,11 +56,14 @@ class Face:
             index_key_string = str(index_key)
             self.face_user_keys['{0}'.format(index_key_string)] = user_id
 
+        print(self.known_encoding_faces)
+
+
     def recognize(self, unknown_filename):
         unknown_image = face_recognition.load_image_file(self.load_unknown_file_by_name(unknown_filename))
         unknown_encoding_image = face_recognition.face_encodings(unknown_image)[0]
 
-        results = face_recognition.compare_faces(self.known_encoding_faces, unknown_encoding_image);
+        results = face_recognition.compare_faces(self.known_encoding_faces, unknown_encoding_image)
 
         print("results", results)
 
